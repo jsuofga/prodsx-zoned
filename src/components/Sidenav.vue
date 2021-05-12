@@ -13,9 +13,11 @@
           <div class = "inputPreviewItem"><a class="waves-effect inputIcon"><i class="material-icons" >visibility</i>{{item}}</a></div>
           <div class = "inputSendItem valign-wrapper"><a @click= "send(index)" class="waves-effect waves-light btn "><i class="material-icons right">play_arrow</i>Select</a></div>
         </li>
-   
+       <li class = "btn-power"><a @click= "tvPower('off')" class="waves-effect waves-light red white-text "><i class="material-icons white-text ">power_settings_new</i>TV OFF</a></li>
+       <li class = "btn-power"><a @click= "tvPower('on')" class="waves-effect waves-light green white-text "><i class="material-icons white-text ">power_settings_new</i>TV ON</a></li>
     </ul>
-
+   
+      
   </div>
 </template>
 
@@ -336,6 +338,44 @@ export default {
         fetch(`http://172.31.2.${this.input}/cgi-bin/query.cgi?cmd=cd /www/images%3Becho jpg 60 1 > /dev/videoip%3Bsleep 1%3Bcat /dev/videoip > capture.jpg`)
         this.bg_image = `http://172.31.2.${this.input}/images/capture.jpg?d=${Date.now()}`
     },
+
+    // TV On or Off via CeC
+    tvPower(_onOff){
+      //console.log('vw selected is',this.vwSelected)
+      let cec_off = `cec_send 20:36` 
+      let cec_on = `cec_send 20:04`
+
+      if(this.vwSelected === ''){
+          if(_onOff == 'off'){
+              //console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${cec_off}`)
+              fetch(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${cec_off}`)
+              M.toast({ html: `TV off`, classes: "rounded red"})
+          }else{
+              //console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                fetch(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                M.toast({ html: `TV on`, classes: "rounded green"})
+          }
+      }else {
+       
+          let startRX = this.vwConfigs[this.vwSelected].baseID
+          let endRX = this.vwConfigs[this.vwSelected].endID
+          if(_onOff == 'off'){
+              for(let i=startRX;i<=endRX;i++ ){
+                 console.log(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                 fetch(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_off}`)
+              }
+              M.toast({ html: `TV off`, classes: "rounded red"})
+          }else{
+              for(let i=startRX;i<=endRX;i++ ){
+                  console.log(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                  fetch(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_on}`)
+              }
+              M.toast({ html: `TV on`, classes: "rounded green"})
+          }
+        
+      }
+  
+    }
  
   },
   mounted(){
@@ -391,6 +431,9 @@ li{
 }
 .btn{
 background-color:#2196f3
+}
+.btn-power{
+  margin:20px
 }
 
 </style>

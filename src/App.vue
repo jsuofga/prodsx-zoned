@@ -133,6 +133,7 @@ export default {
   },  
   Set_rxSelected(payload){
         this.vwStatus.vwMode = 0
+        this.vwSelected = ''  // no Video Wall selected. Its single display or All display .
         this.vwStatus.rxSelected = payload
         this.rxSelected = payload  
   },
