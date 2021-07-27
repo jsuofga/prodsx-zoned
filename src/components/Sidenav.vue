@@ -61,8 +61,11 @@ export default {
 
              if( this.vwStatus.rxSelected == 'all'){
                   this.tvNamesZones.forEach((item,index)=>{
-                    console.log(`http://172.31.3.${index+1}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
-                    fetch(`http://172.31.3.${index+1}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
+                    if(index < 27){
+                        console.log(`http://172.31.3.${index+1}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
+                        fetch(`http://172.31.3.${index+1}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
+                    }
+                 
                   })
              }else{
                   console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
@@ -326,9 +329,9 @@ export default {
             //ClockWise Rotation
             for( let row = 2; row>=0 ; row--){
                   console.log(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
-                  console.log(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=e%20e_vw_pos_layout_0_2%3Be%20e_vw_enable_2_0_${row}_0%3Be%20e_vw_moninfo_${_vw}_200_${_vh}_100%3Be%20e_vw_rotate_6`)
+                  console.log(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=e%20e_vw_pos_layout_0_2%3Be%20e_vw_enable_2_0_${row}_0%3Be%20e_vw_moninfo_${_vw}_200_${_vh}_100%3Be%20e_vw_rotate_5`)
                   fetch(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=rxswitch:${this.input}`)
-                  fetch(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=e%20e_vw_pos_layout_0_2%3Be%20e_vw_enable_2_0_${row}_0%3Be%20e_vw_moninfo_${_vw}_200_${_vh}_100%3Be%20e_vw_rotate_6`)
+                  fetch(`http://172.31.3.${rxId}/cgi-bin/query.cgi?cmd=e%20e_vw_pos_layout_0_2%3Be%20e_vw_enable_2_0_${row}_0%3Be%20e_vw_moninfo_${_vw}_200_${_vh}_100%3Be%20e_vw_rotate_5`)
                    rxId++
             }
         }),delay)

@@ -6,7 +6,7 @@
                         <li><a @click= "openModal1"><i class="material-icons">menu</i></a></li>
                     </ul>
                     <div  class="brand-logo center"><img src="@/assets/images/octava_logo_white-200.png"> </div>
-                    <span id = 'version' class="right">V5.12.21&nbsp;&nbsp;</span>
+                    <small id = 'version' class="right">OLOACM-7.9.21&nbsp;&nbsp;</small>
                 </div>
         </nav>
 
@@ -134,7 +134,9 @@ export default {
 
 <style scoped>
     .nav-extended{
-        background-color: rgb(28,28,30,.75);
+        /* background-color: rgb(28,28,30,.75); */
+         background-color: rgb(28,28,30)
+       
     }
     img{
         width: 100px;

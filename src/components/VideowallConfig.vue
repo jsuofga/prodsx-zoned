@@ -30,7 +30,7 @@
                        <p>
                             <label>
                                 <input @click= "set_vwType('1x3')" name="group1" type="radio"/>
-                                <span>1x3<i class="material-icons" >view_column</i>clockwise</span>
+                                <span>1x3<i class="material-icons" >view_column</i>CCW</span>
                             </label>
 
                        </p>

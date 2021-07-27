@@ -11,7 +11,7 @@
       </div>
       <div v-else class = "zone" >
           <div @click= "showZone(item,index)" class = "waves-effect waves-light roundBtn btn-large" v-for="(item,index) in zoneNames" :key="index">{{zoneNames[index]}}</div>
-          <div @click= "switchAll" data-target="slide-out" class="waves-effect waves-light roundBtn btn-large sidenav-trigger"><i class="material-icons">all_inclusive</i>ALL</div>
+          <div @click= "switchAll" data-target="slide-out" class="waves-effect waves-light roundBtn btn-large sidenav-trigger"><small>classes + auditorium</small></div>
      </div>
 
       <!-- Video Wall Section -->
@@ -22,7 +22,7 @@
 
      <!-- Floating Action Button -->
     <div class="fixed-action-btn ">
-        <a class="btn-floating btn-large teal">
+        <a class="btn-floating btn-large cyan darken-2">
             <small class = 'preset'>Presets</small>
         </a>
         <ul>
@@ -33,6 +33,23 @@
             <li @click= 'switchTvOnOff(1)'><a class="btn-floating green"><i class="material-icons">power_settings_new</i></a></li>
         </ul>
     </div>
+
+            <!-- Modal Structure -->
+        <div id="modal3" class="modal center-align">
+                <h5 id='admin-settings-title' class = 'center-align'>Admin Access</h5>
+                <small>You need administrative privilege to change settings.</small>
+                <div class="modal-content-admin">
+                    <label for="admin"></label>
+                    <i class="material-icons prefix blue-icon">persons</i>
+                    <input name="admin" v-model= "admin" placeholder="Enter admin password" type="text" required autocomplete="off">
+                </div>
+
+                <div class="modal-footer ">
+                    <a @click= "closeModal3" class="modal-close waves-effect waves-light btn red">Cancel</a>
+                    <a @click= "submit" class="modal-close waves-effect waves-light btn blue ">Submit</a>
+                </div>
+        </div>
+
 
 </div>
 
@@ -48,6 +65,7 @@ export default {
     return {
       zoneNamesToDisplay: [],
       preset:[],
+      admin: '',
     }
   },
   computed:{
@@ -74,6 +92,21 @@ export default {
       }
   },
   methods:{
+    submit(){
+          if(this.admin =='octava'){
+                // Goto Zone 3
+                this.$emit('msg-zoneSelected', {zoneId: 3})
+                this.$router.push({ name: `zone`})
+            }else{
+                alert('No access')
+            }
+        this.modalInstance3.close();
+        this.admin = ''
+
+    },
+    closeModal3(){
+         this.modalInstance3.close();
+    },
     test(){
       console.log("vwConfigs length", this.vwConfigs.length)
     },
@@ -99,8 +132,13 @@ export default {
     },
     showZone(item,index){
         let zone = index+1
-        this.$emit('msg-zoneSelected', {zoneId: zone})
-        this.$router.push({ name: `zone`})
+        if (zone == 3){
+            this.modalInstance3.open();
+        }else{
+          this.$emit('msg-zoneSelected', {zoneId: zone})
+          this.$router.push({ name: `zone`})
+       }
+      
     },
     switchAll(){
        this.$emit('msg-rxSelected', 'all')
@@ -131,8 +169,11 @@ export default {
             M.toast({ html: `Switching off displays via CEC`, classes: "rounded red"})
                // Send CEC Off command to displays
                this.tvNamesZones.forEach((item,index)=>{
-                 console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
-                 fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
+                 if(index < 27){
+                      console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
+                      fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
+                 }
+       
                })
               // Send CEC Off command to video wall displays
               this.vwConfigs.forEach((item,index)=>{
@@ -148,8 +189,11 @@ export default {
              M.toast({ html: `Switching on displays via CEC`, classes: "rounded green"})
               // Send CEC Oncommand to displays
               this.tvNamesZones.forEach((item,index)=>{
-                console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
-                fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
+                if(index < 27){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
+                }
+
               
               })
               // Send CEC On command to video wall displays
@@ -169,8 +213,9 @@ export default {
   mounted(){
         M.AutoInit() // For Materialize to work!
         console.log("vwConfigs length", this.vwConfigs.length)
+        const modal3 = document.getElementById('modal3')
+        this.modalInstance3 = M.Modal.init(modal3);
   }
-
 }
 </script>
 
@@ -185,6 +230,7 @@ export default {
   position:absolute;
   box-sizing: border-box; 
   background-color: rgb(28,28,30);
+ 
 
 }
 .welcome{
@@ -227,8 +273,10 @@ export default {
    width:180px;
    border-radius: 50%;
   /* // background-color: rgb(28,28,30) ; */
-  background-color: #2c3e50;
+  /* background-color: #2c3e50; */
+    background-color: #1798A1;
 }
+
 .roundBtn:hover,.vwBtn:hover {
   background-color:#2196f3 !important;
 }

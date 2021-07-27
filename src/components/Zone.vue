@@ -1,7 +1,8 @@
 <template>
 
-  <div class="zone">
-         <div class = "preview tvPreview"  v-bind:style="{ backgroundImage: 'url(' + bg_image + ')'}">
+  <div  class="zone">
+
+       <div class = "preview tvPreview"  v-bind:style="{ backgroundImage: 'url(' + bg_image + ')'}">
             <div id = 'rx-title'><h5 class = "black-text valign-wrapper">{{tvSelected}}</h5></div>
          </div>
 
@@ -15,12 +16,15 @@
 
         <!-- Floating Action Button -->
           <div class="fixed-action-btn ">
-              <a id = 'homeBtn' class="btn-floating btn-large  blue">
+              <a id = 'homeBtn' class="btn-floating btn-large  cyan darken-2">
                 <router-link to="/"><i class="large material-icons ">home</i></router-link>
               </a>
           </div>
 
-  </div>
+
+    </div>
+        
+  
 </template>
 
 <script>
@@ -34,7 +38,8 @@ export default {
       RxFeedback: [],  //  TX channel each RX is switched to
       rx: 1  , // rx selected. 1,2,.....
       tvSelected: '',    // name of tv
-      bg_image: ''
+      bg_image: '',
+   
     }
   },
   computed:{
@@ -88,6 +93,8 @@ export default {
     this.firstRxIdInZone()
     let getRxStatus = setInterval(this.RxChSelect,10000)
     this.snapShot = setInterval(this.changeBackgroundImage,2500)
+    console.log('zoneSlected is', this.zoneSelected)
+
   },
     beforeDestroy(){
      clearInterval(this.getRxStatus)
@@ -192,7 +199,7 @@ span{
   background-color: rgb(255,255,255);
   width:30%;
   height:30px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 
