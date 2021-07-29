@@ -1,6 +1,6 @@
 # prodsx-video-wall
 
-> A Vue.js project
+>Video Over IP Zoned Controller
 
 ## Build Setup
 
