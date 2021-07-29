@@ -13,8 +13,8 @@
           <div class = "inputPreviewItem"><a class="waves-effect inputIcon"><i class="material-icons" >visibility</i>{{item}}</a></div>
           <div class = "inputSendItem valign-wrapper"><a @click= "send(index)" class="waves-effect waves-light btn "><i class="material-icons right">play_arrow</i>Select</a></div>
         </li>
-       <li class = "btn-power"><a @click= "tvPower('off')" class="waves-effect waves-light red white-text "><i class="material-icons white-text ">power_settings_new</i>TV OFF</a></li>
-       <li class = "btn-power"><a @click= "tvPower('on')" class="waves-effect waves-light green white-text "><i class="material-icons white-text ">power_settings_new</i>TV ON</a></li>
+       <li v-if= "rxSelected != 'all'" class = "btn-power"><a @click= "tvPower('off')" class="waves-effect waves-light red white-text "><i class="material-icons white-text ">power_settings_new</i>TV OFF</a></li>
+       <li v-if= "rxSelected != 'all'" class = "btn-power"><a @click= "tvPower('on')" class="waves-effect waves-light green white-text "><i class="material-icons white-text ">power_settings_new</i>TV ON</a></li>
     </ul>
    
       
