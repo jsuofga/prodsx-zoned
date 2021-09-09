@@ -13,8 +13,15 @@
           <div class = "inputPreviewItem"><a class="waves-effect inputIcon"><i class="material-icons" >visibility</i>{{item}}</a></div>
           <div class = "inputSendItem valign-wrapper"><a @click= "send(index)" class="waves-effect waves-light btn "><i class="material-icons right">play_arrow</i>Select</a></div>
         </li>
-       <li class = "btn-power"><a @click= "tvPower('off')" class="waves-effect waves-light red white-text "><i class="material-icons white-text ">power_settings_new</i>TV OFF</a></li>
-       <li class = "btn-power"><a @click= "tvPower('on')" class="waves-effect waves-light green white-text "><i class="material-icons white-text ">power_settings_new</i>TV ON</a></li>
+        <div v-if = 'rxSelected !== "all" ' class = 'tv-on-off'>
+            <a @click= "tvPower('off')" class="waves-effect waves-light red white-text btn-power"><i class="material-icons left white-text ">power_settings_new</i>TV OFF</a>
+            <a @click= "tvPower('on')" class="waves-effect waves-light green white-text btn-power "><i class="material-icons left white-text ">power_settings_new</i>TV ON</a>
+        </div>
+        <div v-if = 'rxSelected !== "all" ' class = 'tv-input-select'>
+            <a @click= "hdmiInputSelect('1')" class="waves-effect waves-light blue white-text btn-power"><i class="material-icons white-text ">settings_input_hdmi</i>1</a>
+            <a @click= "hdmiInputSelect('2')" class="waves-effect waves-light blue white-text btn-power "><i class="material-icons white-text ">settings_input_hdmi</i>2</a>
+            <a @click= "hdmiInputSelect('3')" class="waves-effect waves-light blue white-text btn-power "><i class="material-icons white-text ">settings_input_hdmi</i>3</a>
+        </div>
     </ul>
    
       
@@ -345,8 +352,10 @@ export default {
     // TV On or Off via CeC
     tvPower(_onOff){
       //console.log('vw selected is',this.vwSelected)
-      let cec_off = `cec_send 20:36` 
-      let cec_on = `cec_send 20:04`
+      // let cec_off = `cec_send 20:36` 
+      // let cec_on = `cec_send 20:04`
+      let cec_off = `cec_send E0:36` 
+      let cec_on = `cec_send E0:04`
 
       if(this.vwSelected === ''){
           if(_onOff == 'off'){
@@ -378,6 +387,27 @@ export default {
         
       }
   
+    },
+
+    hdmiInputSelect(_input){
+      let hdmi1 = `cec_send EF:82:10:00` 
+      let hdmi2 = `cec_send EF:82:20:00`
+      let hdmi3 = `cec_send EF:82:30:00`
+
+      if(_input == '1'){
+            //  console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+              fetch(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+              M.toast({ html: `HDMI 1`, classes: "rounded blue"})
+      }else if(_input == '2'){
+           // console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+           fetch(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+            M.toast({ html: `HDMI 2`, classes: "rounded blue"})
+      }else if(_input == '3'){
+           // console.log(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+            fetch(`http://172.31.3.${this.rxSelected}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+            M.toast({ html: `HDMI 3`, classes: "rounded blue"})
+      }else{}
+
     }
  
   },
@@ -436,7 +466,24 @@ li{
 background-color:#2196f3
 }
 .btn-power{
-  margin:20px
+  margin:10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
+.tv-on-off{
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+  border-top:1px solid grey
+}
+.tv-input-select{
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
 
 </style>
