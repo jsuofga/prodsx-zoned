@@ -2,8 +2,7 @@
   <div id="app">
     <Navbar
      v-bind:tvNamesZones= "tvNamesZones"
-
-    
+   
     />
     <Sidenav 
       @msg-inputSelected = "Set_inputSelected"
@@ -88,7 +87,7 @@ export default {
         zones:[],  
         zonesId:[], 
         tvNamesZones:[],  //[{rxId: 1,name:TV1,zoneId: 2,zone:vip room},{rxId: 2,name:TV2,zoneId: 2,zone:vip room},...]
-        zoneSelected: 1,
+        zoneSelected: 0,
         rxSelected: 1, 
     }
 },

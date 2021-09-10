@@ -15,11 +15,37 @@
           </div>
 
         <!-- Floating Action Button -->
-          <div class="fixed-action-btn ">
+          <!-- <div class="fixed-action-btn ">
               <a id = 'homeBtn' class="btn-floating btn-large  cyan darken-2">
                 <router-link to="/"><i class="large material-icons ">home</i></router-link>
               </a>
-          </div>
+          </div> -->
+
+        <!-- Floating Action Button -->
+        <div class="fixed-action-btn ">
+            <a class="btn-floating btn-large cyan darken-2">
+                <!-- <small class = 'preset white-text'>Presets</small> -->
+                <i class="material-icons">more_vert</i>
+            </a>
+            <ul>
+                <li v-if = 'zoneSelected == 1' @click= "switchHDMI('classRm-HDMI1')"><a class="btn-floating orange"><small class='white-text'>HDMI 1</small></a></li>
+                <li v-if = 'zoneSelected == 1' @click= "switchHDMI('classRm-HDMI2')"><a class="btn-floating blue"><small class='white-text'>HDMI 2</small></a></li>
+                <li v-if = 'zoneSelected == 1' @click= "switchHDMI('classRm-HDMI3')"><a class="btn-floating purple"><small class='white-text'>HDMI 3</small></a></li>
+                <li v-if = 'zoneSelected == 1' @click= "switchTvOnOff('classRm-off')"><a class="btn-floating red"><i class="material-icons">power_settings_new</i></a></li>
+                <li v-if = 'zoneSelected == 1' @click= "switchTvOnOff('classRm-on')"><a class="btn-floating green"><i class="material-icons">power_settings_new</i></a></li>
+                <!-- <li v-if = 'zoneSelected == 2' @click= 'switchHDMI(auditorium-HDMI1)'><a class="btn-floating orange"><small class='white-text'>HDMI 1</small></a></li>
+                <li v-if = 'zoneSelected == 2' @click= 'switchHDMI(auditorium-HDMI2)'><a class="btn-floating blue"><small class='white-text'>HDMI 2</small></a></li>
+                <li v-if = 'zoneSelected == 2' @click= 'switchHDMI(auditorium-HDMI3)'><a class="btn-floating purple"><small class='white-text'>HDMI 3</small></a></li> -->
+                <li v-if = 'zoneSelected == 2' @click= "switchTvOnOff('auditorium-off')"><a class="btn-floating red"><i class="material-icons">power_settings_new</i></a></li>
+                <li v-if = 'zoneSelected == 2' @click= "switchTvOnOff('auditorium-on')"><a class="btn-floating green"><i class="material-icons">power_settings_new</i></a></li>
+                <li v-if = 'zoneSelected == 3' @click= "switchHDMI('signs-HDMI1')"><a class="btn-floating orange"><small class='white-text'>HDMI 1</small></a></li>
+                <li v-if = 'zoneSelected == 3' @click= "switchHDMI('signs-HDMI2')"><a class="btn-floating blue"><small class='white-text'>HDMI 2</small></a></li>
+                <li v-if = 'zoneSelected == 3' @click= "switchHDMI('signs-HDMI3')"><a class="btn-floating purple"><small class='white-text'>HDMI 3</small></a></li>
+                <li v-if = 'zoneSelected == 3' @click= "switchTvOnOff('signs-off')"><a class="btn-floating red"><i class="material-icons">power_settings_new</i></a></li>
+                <li v-if = 'zoneSelected == 3' @click= "switchTvOnOff('signs-on')"><a class="btn-floating green"><i class="material-icons">power_settings_new</i></a></li>
+                <li  ><a id = 'homeBtn' class="btn-floating btn-large  cyan darken-2"><router-link to="/"><i class="large material-icons ">home</i></router-link></a></li>
+            </ul>
+        </div>
 
 
     </div>
@@ -82,6 +108,123 @@ export default {
           fetch(`http://172.31.3.${this.rx}/cgi-bin/query.cgi?cmd=cd /www/images%3Becho jpg 60 1 > /dev/videoip%3Bsleep 1%3Bcat /dev/videoip > capture.jpg`)
           this.bg_image = `http://172.31.3.${this.rx}/images/capture.jpg`+ '?d=' + Date.now();
     },
+    switchHDMI(_zone){
+
+      let hdmi1 = `cec_send EF:82:10:00` 
+      let hdmi2 = `cec_send EF:82:20:00`
+      let hdmi3 = `cec_send EF:82:30:00`
+
+      if(_zone == 'classRm-HDMI1'){
+        M.toast({ html: `Class Rooms HDMI 1`, classes: "rounded blue"})
+        this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '1'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+            }
+        })
+      }else if(_zone == 'classRm-HDMI2'){
+          M.toast({ html: `Class Rooms HDMI 2`, classes: "rounded blue"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '1'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+            }
+        })
+      }else if(_zone == 'classRm-HDMI3'){
+          M.toast({ html: `Class Rooms HDMI 3`, classes: "rounded blue"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '1'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+            }
+        })
+
+      }else if(_zone == 'signs-HDMI1'){
+          M.toast({ html: `Signs HDMI 1`, classes: "rounded blue"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '3'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi1}`)
+            }
+        })
+      
+      }else if(_zone == 'signs-HDMI2'){
+          M.toast({ html: `Signs HDMI 2`, classes: "rounded blue"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '3'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi2}`)
+            }
+        })
+      }
+      else if(_zone == 'signs-HDMI3'){
+          M.toast({ html: `Signs HDMI 3`, classes: "rounded blue"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '3'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${hdmi3}`)
+            }
+        })
+    }else{}
+
+
+    },
+    switchTvOnOff(_onOff){
+      let cec_off = `cec_send E0:36` 
+      let cec_on = `cec_send E0:04`
+
+      if(_onOff == 'classRm-on'){
+        M.toast({ html: `Class Room TVs ON`, classes: "rounded green"})
+        this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '1'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+            }
+        })
+      }else if(_onOff == 'classRm-off'){
+          M.toast({ html: `Class Room TVs OFF`, classes: "rounded red"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '1'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+            }
+        })
+      }else if(_onOff == 'auditorium-on'){
+          M.toast({ html: `Auditorium Projectors ON`, classes: "rounded green"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '2'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+            }
+        })
+      }else if(_onOff == 'auditorium-off'){
+          M.toast({ html: `Auditorium Projectors  OFF`, classes: "rounded red"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '2'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+            }
+        })
+      }else if(_onOff == 'signs-on'){
+          M.toast({ html: `Signs ON`, classes: "rounded green"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '3'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+            }
+        })
+      }else if(_onOff == 'signs-off'){
+          M.toast({ html: `Signs OFF`, classes: "rounded red"})
+           this.tvNamesZones.forEach((item,index)=>{
+            if(item.zoneId == '3'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+            }
+        })
+      }
+    },
+
+
   },
 
   // Life Cycle Hooks

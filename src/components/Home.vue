@@ -23,7 +23,8 @@
      <!-- Floating Action Button -->
     <div class="fixed-action-btn ">
         <a class="btn-floating btn-large cyan darken-2">
-            <small class = 'preset'>Presets</small>
+            <!-- <small class = 'preset'>Presets</small> -->
+            <i class="material-icons">more_vert</i>
         </a>
         <ul>
             <li @click= 'switchPreset(1)'><a class="btn-floating orange"><i class="material-icons">looks_one</i></a></li>
@@ -164,14 +165,16 @@ export default {
         })    
       },
       switchTvOnOff(_onoff){
+          let cec_off = `cec_send E0:36` 
+          let cec_on = `cec_send E0:04`
 
           if(_onoff == 0){
             M.toast({ html: `Switching off displays via CEC`, classes: "rounded red"})
                // Send CEC Off command to displays
                this.tvNamesZones.forEach((item,index)=>{
-                 if(index < 27){
-                      console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
-                      fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
+                 if(item.zoneId == '1' || item.zoneId == '2'){
+                      console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                      fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
                  }
        
                })
@@ -180,8 +183,8 @@ export default {
                  let firstRx = this.vwConfigs[index].baseID
                  let lastRx = this.vwConfigs[index].endID
                   for(let i = firstRx; i<= lastRx; i++){
-                    console.log(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
-                    fetch(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=cec_send 20:36`)
+                    console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
+                    fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_off}`)
                   }
               })             
 
@@ -189,9 +192,9 @@ export default {
              M.toast({ html: `Switching on displays via CEC`, classes: "rounded green"})
               // Send CEC Oncommand to displays
               this.tvNamesZones.forEach((item,index)=>{
-                if(index < 27){
-                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
-                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
+                if(item.zoneId == '1' || item.zoneId == '2'){
+                  console.log(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                  fetch(`http://172.31.3.${this.tvNamesZones[index].rxId}/cgi-bin/query.cgi?cmd=${cec_on}`)
                 }
 
               
@@ -201,8 +204,8 @@ export default {
                  let firstRx = this.vwConfigs[index].baseID
                  let lastRx = this.vwConfigs[index].endID
                   for(let i = firstRx; i<= lastRx; i++){
-                    console.log(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
-                    fetch(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=cec_send 20:04`)
+                    console.log(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_on}`)
+                    fetch(`http://172.31.3.${i}/cgi-bin/query.cgi?cmd=${cec_on}`)
                   }
               })             
           }

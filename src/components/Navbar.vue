@@ -6,7 +6,7 @@
                         <li><a @click= "openModal1"><i class="material-icons">menu</i></a></li>
                     </ul>
                     <div  class="brand-logo center"><img src="@/assets/images/octava_logo_white-200.png"> </div>
-                    <small id = 'version' class="right">OLOACM-9.9.21&nbsp;&nbsp;</small>
+                    <small id = 'version' class="right">OLOACM-9.10.21A&nbsp;&nbsp;</small>
                 </div>
         </nav>
 
@@ -51,7 +51,7 @@
 
 export default {
     name: 'Navbar',
-    props:["tvNamesZones"],
+    props:["tvNamesZones","zoneSelected"],
     data () {
         return {
             admin:'',
