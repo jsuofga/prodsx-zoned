@@ -342,8 +342,8 @@ export default {
     // TV On or Off via CeC
     tvPower(_onOff){
       //console.log('vw selected is',this.vwSelected)
-      let cec_off = `cec_send 20:36` 
-      let cec_on = `cec_send 20:04`
+      let cec_off = `cec_send E0:36` 
+      let cec_on = `cec_send E0:04`
 
       if(this.vwSelected === ''){
           if(_onOff == 'off'){
