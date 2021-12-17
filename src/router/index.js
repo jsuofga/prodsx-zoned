@@ -10,6 +10,7 @@ import Name_zones from '@/components/Name_zones'
 import Name_inputs from '@/components/Name_inputs'
 import Name_outputs from '@/components/Name_outputs'
 import Zone from '@/components/Zone'
+import Device_list from '@/components/Device_list'
 
 Vue.use(Router)
 
@@ -60,10 +61,15 @@ export default new Router({
       name: "name_outputs",
       component: Name_outputs
     },
-      {
+    {
       path: "/zone",
       name: "zone",
       component: Zone
+    },
+    {
+      path: "/device-list",
+      name: "device_list",
+      component: Device_list
     },
 
   ]

@@ -6,7 +6,7 @@
                         <li><a @click= "openModal1"><i class="material-icons">menu</i></a></li>
                     </ul>
                     <div  class="brand-logo center"><img src="@/assets/images/octava_logo_white-200.png"> </div>
-                    <span id = 'version' class="right">V9.10.21&nbsp;&nbsp;</span>
+                    <span id = 'version' class="right">V12.17.21&nbsp;&nbsp;</span>
                 </div>
         </nav>
 
@@ -29,6 +29,7 @@
         <div id="modal2" class="modal">
             <div class="modal-content-settings center-align">
                 <ul class = "center-align">
+                    <router-link to="/device-list"><li @click= "closeModal2"><i class="material-icons blue-grey-text ">search</i><span>Discover Connected Devices</span> </li></router-link>
                     <router-link to="/name-zones"><li @click= "closeModal2"><i class="material-icons blue-grey-text ">edit</i><span>Zones/Groups</span> </li></router-link>
                     <router-link to="/name-inputs"><li @click= "closeModal2"><i class="material-icons blue-grey-text ">edit</i><span>Video Inputs</span></li></router-link>
                     <router-link to="/name-outputs"><li @click= "closeModal2"><i class="material-icons blue-grey-text ">edit</i><span>Video Outputs</span></li></router-link>

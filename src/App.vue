@@ -2,7 +2,6 @@
   <div id="app">
     <Navbar
      v-bind:tvNamesZones= "tvNamesZones"
-
     
     />
     <Sidenav 
@@ -23,7 +22,6 @@
        @msg-zoneSelected= "Set_zoneSelected"
        @msg-sourceNames = "Set_sourceNames"
        @msg-rxSelected = "Set_rxSelected"
-       
     
        v-bind:inputSelected= "inputSelected" 
        v-bind:vwConfigs = "vwConfigs"
@@ -54,6 +52,7 @@ import Name_zones from '@/components/Name_zones'
 import Name_inputs from '@/components/Name_inputs'
 import Name_outputs from '@/components/Name_outputs'
 import Zone from '@/components/Zone'
+import Device_list from '@/components/Device_list'
 
 
 export default {
@@ -71,6 +70,7 @@ export default {
     Name_inputs,
     Name_outputs,
     Zone,
+    Device_list,
 
   },
   Sidenavwatch:{
