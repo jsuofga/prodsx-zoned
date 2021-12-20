@@ -2,6 +2,7 @@
   <div class="name-zones box ">
       <form >
             <h5>Device List | <span class ='right-align'>{{deviceListDump.length}} Devices Found</span> </h5>
+
       <table class = 'striped centered'>
 
           <thead>
@@ -15,9 +16,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for= "(item,index) in deviceListDump" :key="index">
-              <td  v-if = "deviceListDump[index].is_host == 'y' " @click = 'openURL(deviceListDump[index].ip)'><a class="waves-effect waves-light blue btn-small"><i class="material-icons left"></i>TX | {{deviceListDump[index].ip}} </a></td>
-              <td v-else @click = 'openURL(deviceListDump[index].ip)'> <a class="waves-effect waves-light orange btn-small"><i class="material-icons left"></i>RX | {{deviceListDump[index].ip}}</a></td>
+            <tr v-for= "(item,index) in deviceListDump" :key="index" >
+              <td v-if = "deviceListDump[index].is_host == 'y' "  @click = 'openURL(deviceListDump[index].ip)'><small class = 'warning' v-if= "deviceIPduplicate[index] === true " >Duplicate IP!</small><a class="waves-effect waves-light blue btn-small"><i class="material-icons left"></i>TX | {{deviceListDump[index].ip}} </a> </td>
+              <td v-else @click = 'openURL(deviceListDump[index].ip)' ><small class = 'warning' v-if= "deviceIPduplicate[index] === true " >Duplicate IP!</small> <a class="waves-effect waves-light orange btn-small"><i class="material-icons left"></i>RX | {{deviceListDump[index].ip}}</a></td>
               <td>{{deviceListDump[index].host_name.replace("ast3-","").replace("gateway","").replace("client","")}}</td>
               <td>{{deviceListDump[index].mac}}</td>
               <td>{{deviceListDump[index].mcu_version}}</td>
@@ -55,47 +56,57 @@ export default {
         return{
            deviceListDump :[],
            deviceList_ip:[],
-           deviceList_macAddress:[],
-           showProgressBar:false
+           showProgressBar:false,
+           deviceIPduplicate: []
         }
     },
+    computed:{
+
+    },
     methods: {
+
       openURL(_url){
           window.open(`http://${_url}`);
       },
       open_index_fw(_url){
           window.open(`http://${_url}/index_fw.html`);
       },
-
-      scan(e){
-        e.preventDefault()
+      scan(){
+        //e.preventDefault()
       //  M.toast({ html: `Scanning for Devices`, classes: "rounded blue" });
         this.showProgressBar = true
-        this.deviceList_macAddress = []
         this.deviceList_ip = []
+   
         this.getDeviceList()
-        .then(data => {this.getFirmwareVersionAndMAC()})
-       
-      },
+        .then(data => {
+          this.getFirmwareVersionAndMAC()
+          .then(data =>{ this.findDuplicateIP()})
+        })
 
+      },
       async getDeviceList(){
-        // get node_list -j info
+          this.deviceListDump = []
+         // get node_list -j info
             const hostname = window.location.hostname
             // console.log(hostname)
-            //const response= await fetch(`http://172.31.2.1/cgi-bin/query.cgi?cmd=node_list%20-j`)
-            const response= await fetch(`http://${hostname}/cgi-bin/query.cgi?cmd=node_list%20-j`)
+            const response= await fetch(`http://172.31.2.1/cgi-bin/query.cgi?cmd=node_list%20-j`)
+            //const response= await fetch(`http://${hostname}/cgi-bin/query.cgi?cmd=node_list%20-j`)
             const data = await response.text()
-          //  console.log(JSON.parse(data))
-            this.deviceListDump = JSON.parse(data)  //{ast3-clientrx0001{}, ast3-clientrx0002{},....} . Object of objects
-            this.deviceListDump = Object.values(this.deviceListDump)  // extract the value of the object
-            //console.log('DeviceListDump',this.deviceListDump)
-            this.deviceListDump.forEach((item,index)=>{
-                 //console.log('item,', item)
-                 this.deviceList_ip.push(item.ip)
-            })
-           //  console.log('ip',this.deviceList_ip)
-        
 
+            //Process string input. 1)remove first{ and ,}' //remove first{ and ,} 2) extact all items between {}
+            let testString = data.slice(1,-2)  //remove first{ and last }'
+            let regex = /{\s*([^}]+)\s*}/g ;  // get all items in between {}
+            let matched = testString.match(regex)  // array of value that match the regex [ ]
+            console.log('matched',matched)
+           // push matched items into array as objects
+             matched.forEach((item,index) =>{
+                this.deviceListDump.push(JSON.parse(item))
+            })
+              console.log('deviceListDump',this.deviceListDump)
+             this.deviceListDump.forEach((item,index)=>{
+                  this.deviceList_ip.push(item.ip)
+             })
+    
       },
       async getFirmwareVersionAndMAC(){
           console.log('iplist',this.deviceList_ip)
@@ -134,32 +145,73 @@ export default {
                 let ethaddrOnly = resultDumpRo.filter(item => item.includes('ethaddr'))
                 //console.log(ethaddrOnly)
                 this.deviceListDump[indexOfIP].mac = ethaddrOnly[0].replace("ethaddr=","")
-               
             }
-            
-        // Sort By IP
-          this.deviceListDump = this.deviceListDump.sort(function(a, b) {
-            var A = a.ip.toUpperCase(); // ignore upper and lowercase
-            var B = b.ip.toUpperCase(); // ignore upper and lowercase
-            if (A < B) {
-              return -1; //A comes first
-            }
-            if (A > B) {
-              return 1; // B comes first
-            }
-              return 0;  // names must be equal
+              // Sort By IP
+                this.deviceListDump = this.deviceListDump.sort(function(a, b) {
+                    var A = a.ip.toUpperCase(); // ignore upper and lowercase
+                    var B = b.ip.toUpperCase(); // ignore upper and lowercase
+                    if (A < B) {
+                      return -1; //A comes first
+                    }
+                    if (A > B) {
+                      return 1; // B comes first
+                    }
+                      return 0;  // names must be equal
 
-         });
+                  });
 
-         console.log('updated dump SORTED', this.deviceListDump)
-         this.showProgressBar = !this.showProgressBar
-         return 'done'
+            this.showProgressBar = !this.showProgressBar
+            return 'done'
       },
-      cancel(e){
-          e.preventDefault()
-          this.$router.push({name:'home'})
-      }
+      findDuplicateIP(){
+            
+          const count = {}
+          const duplicateIPs = []
+
+          this.deviceList_ip.forEach(item => {
+              if (count[item]) {
+                count[item] +=1
+                return
+              }
+              count[item] = 1
+          })
+
+          for (let prop in count){
+              if (count[prop] >=2){
+                  duplicateIPs .push(prop)
+              }
+          }
+
+          // update with 'duplicate' in this.deviceListDump
+          this.deviceListDump.forEach((device,index) =>{
+              this.$set(this.deviceIPduplicate, index, false)
+           
+             duplicateIPs.forEach(item =>{
+                if(item == device.ip){
+                 // console.log('device',index,'is a duplicate')
+                  this.$set(this.deviceIPduplicate, index, true)
+  
+              
+                  
+                }
+             })
+          })
+
+          if(duplicateIPs.length > 0){
+            alert('There are duplicate IP assigned to devices!')
+           
+          }
+          console.log('Finally', this.deviceListDump)
+          
   },
+
+    cancel(e){
+        e.preventDefault()
+        this.$router.push({name:'home'})
+    },
+    
+  },
+ 
   //Life Cycle Hooks
     mounted(){
         M.AutoInit() // For Materialize to work!
@@ -168,7 +220,8 @@ export default {
     created(){
     
     }
-}   
+
+}
 
 </script>
 
@@ -197,5 +250,13 @@ form{
   border:1px solid lightgray;
   margin:1px;
   border-radius: 4px;
+}
+
+.warning{
+  color:red;
+}
+
+.ok{
+  border-left:5px solid green;
 }
 </style>
