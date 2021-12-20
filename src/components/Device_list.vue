@@ -89,8 +89,8 @@ export default {
          // get node_list -j info
             const hostname = window.location.hostname
             // console.log(hostname)
-            const response= await fetch(`http://172.31.2.1/cgi-bin/query.cgi?cmd=node_list%20-j`)
-            //const response= await fetch(`http://${hostname}/cgi-bin/query.cgi?cmd=node_list%20-j`)
+            //const response= await fetch(`http://172.31.2.1/cgi-bin/query.cgi?cmd=node_list%20-j`)
+            const response= await fetch(`http://${hostname}/cgi-bin/query.cgi?cmd=node_list%20-j`)
             const data = await response.text()
 
             //Process string input. 1)remove first{ and ,}' //remove first{ and ,} 2) extact all items between {}
