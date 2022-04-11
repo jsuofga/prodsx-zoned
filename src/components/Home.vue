@@ -212,6 +212,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(4,auto);
     grid-column-gap: 25px;
+    grid-row-gap: 10px;
     justify-content: center;
     align-items: center;
     height:50vh;

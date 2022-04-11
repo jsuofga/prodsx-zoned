@@ -23,8 +23,8 @@
 
         <div class = 'listDiv'>
                 <div class = "gridItem" v-for="(item,index) in tvNames" :key="index">
-                  <p>RX ID {{index+1}}</p>
-                  <p>{{tvNames[index]}}</p>
+                  <small>RX ID {{index+1}}</small>
+                  <small>{{tvNames[index]}}</small>
                   <span class = "edit"><i class="material-icons modal-trigger" href="#modal3" v-on:click= "edit(index)">edit</i></span>
                   <small>Zone-{{zones[index]}}</small>
                   <span class = "trash"><i class="material-icons" v-on:click= "trash(index)">delete_forever</i></span>
@@ -120,7 +120,7 @@ export default {
               // Save
               fetch("http://172.31.2.1/cgi-bin/query.cgi?cmd=astparam save")
               .then(function(data) {
-                  //alert('Saved to TX1 Database');
+                  alert('Saved to TX1 Database');
               })
           })
                   this.$emit('msg-tvNamesZones',tvNamesZones) //
@@ -148,7 +148,7 @@ export default {
    justify-content: center;
    width:100%;
    background-color: #2c3e50;
-   height:100vh
+   height:100vh;
 
 }
 .formContainer{
@@ -159,6 +159,7 @@ export default {
   background-color: white;
   border-radius:10px;
   width:90%;
+ 
 }
 .field{
   width:80%;

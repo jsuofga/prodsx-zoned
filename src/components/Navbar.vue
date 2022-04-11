@@ -6,7 +6,8 @@
                         <li><a @click= "openModal1"><i class="material-icons">menu</i></a></li>
                     </ul>
                     <div  class="brand-logo center"><img src="@/assets/images/octava_logo_white-200.png"> </div>
-                    <span id = 'version' class="right">V12.20.21-A&nbsp;&nbsp;</span>
+                    <!-- <div  class="brand-logo center"><img src="@/assets/images/knock-out-sports-bar-logo.png"> </div> -->
+                    <span id = 'version' class="right">V02.07.22.A&nbsp;&nbsp;</span>
                 </div>
         </nav>
 

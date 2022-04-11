@@ -55,7 +55,7 @@ export default {
     },
 
     rxSelected(item){
-        this.rx = item.rxId 
+        this.rx = item.rxId
         this.tvSelected = item.name
         //console.log(tvSelected)
         this.$emit('msg-rxSelected', parseInt(item.rxId)) // rx  = 1,2,3
@@ -71,6 +71,10 @@ export default {
                 this.RxFeedback[index] = this.sourceNames[parseInt(data)-1]
                 this.RxFeedback = JSON.parse(JSON.stringify(this.RxFeedback )) //convert the object of Vue to normal object!  Very strange. Solution suggested by Evan You
             })
+            .catch((error) => {
+              M.toast({ html: `RX${this.zoneTVs[index].rxId} not detected`, classes: "rounded red" });
+              this.RxFeedback[index] = 'Not Detected'
+            });
         })
      },
       changeBackgroundImage(){
@@ -86,10 +90,12 @@ export default {
   },
   created(){
     this.firstRxIdInZone()
-    let getRxStatus = setInterval(this.RxChSelect,10000)
+    // let getRxStatus = setInterval(this.RxChSelect,10000)
+    this.getRxStatus = setInterval(this.RxChSelect,10000)
     this.snapShot = setInterval(this.changeBackgroundImage,2500)
   },
-    beforeDestroy(){
+  beforeDestroy(){
+
      clearInterval(this.getRxStatus)
      clearInterval(this.snapShot)
   }

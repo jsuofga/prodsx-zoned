@@ -47,7 +47,6 @@ export default {
           this.$emit('msg-inputSelected',{source:this.input}) // 
           if(this.input < 10){
             this.input = `00${this.input}`
-
           }else{
              this.input = `0${this.input}`
           }
@@ -335,8 +334,14 @@ export default {
       },
       changeBackgroundImage(){
         //Show TX Preview
-        fetch(`http://172.31.2.${this.input}/cgi-bin/query.cgi?cmd=cd /www/images%3Becho jpg 60 1 > /dev/videoip%3Bsleep 1%3Bcat /dev/videoip > capture.jpg`)
-        this.bg_image = `http://172.31.2.${this.input}/images/capture.jpg?d=${Date.now()}`
+     
+        //remove leading '00' from this.input. FOr exampe, this.input = '008' , txInput = 8
+        let txInput = this.input.replace(/^0+/, '');
+         
+        fetch(`http://172.31.2.${txInput}/cgi-bin/query.cgi?cmd=cd /www/images%3Becho jpg 60 1 > /dev/videoip%3Bsleep 1%3Bcat /dev/videoip > capture.jpg`)
+        this.bg_image = `http://172.31.2.${txInput}/images/capture.jpg?d=${Date.now()}`
+        // fetch(`http://172.31.2.${this.input}/cgi-bin/query.cgi?cmd=cd /www/images%3Becho jpg 60 1 > /dev/videoip%3Bsleep 1%3Bcat /dev/videoip > capture.jpg`)
+        // this.bg_image = `http://172.31.2.${this.input}/images/capture.jpg?d=${Date.now()}`
     },
 
     // TV On or Off via CeC
@@ -379,12 +384,14 @@ export default {
  
   },
   mounted(){
+    
     M.AutoInit() // For Materialize to work!
-
+   
   },
   created(){
     // Start Snap Shot Preview capture
-    this.snapshot = setInterval(this.changeBackgroundImage,2500) 
+      this.snapshot = setInterval(this.changeBackgroundImage,2500) 
+  
   },
 
 

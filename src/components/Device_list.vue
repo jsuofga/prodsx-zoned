@@ -24,7 +24,7 @@
               <td>{{deviceListDump[index].mcu_version}}</td>
               <td>{{deviceListDump[index].fw_build}}</td>
               <td>{{deviceListDump[index].fw_version}}</td>
-              <td><a @click = "open_index_fw(deviceListDump[index].ip)" class="waves-effect waves-light btn-small"><i class="material-icons left">get_app</i>firmware</a></td>
+              <td><a @click = "open_index_fw(deviceListDump[index].ip)" class="waves-effect waves-light btn-small disabled"><i class="material-icons left">get_app</i>firmware</a></td>
             </tr>
 
           </tbody>
