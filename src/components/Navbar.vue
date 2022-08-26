@@ -6,7 +6,7 @@
                         <li><a @click= "openModal1"><i class="material-icons">menu</i></a></li>
                     </ul>
                     <div  class="brand-logo center"><img src="@/assets/images/octava_logo_white-200.png"> </div>
-                    <small id = 'version' class="right">OLOACM-9.10.21A&nbsp;&nbsp;</small>
+                    <small id = 'version' class="right">OLOACM-82622-classRoom&nbsp;&nbsp;</small>
                 </div>
         </nav>
 

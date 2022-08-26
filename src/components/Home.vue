@@ -10,8 +10,8 @@
           <div @click= "switchAll" data-target="slide-out" class="waves-effect waves-light roundBtn btn-large sidenav-trigger">ALL TVs</div>
       </div>
       <div v-else class = "zone" >
-          <div @click= "showZone(item,index)" class = "waves-effect waves-light roundBtn btn-large" v-for="(item,index) in zoneNames" :key="index">{{zoneNames[index]}}</div>
-          <div @click= "switchAll" data-target="slide-out" class="waves-effect waves-light roundBtn btn-large sidenav-trigger"><small>classes + auditorium</small></div>
+          <div @click= "showZone(item,index)" class = "waves-effect waves-light roundBtn btn-large" v-for="(item,index) in zoneNames.slice(0, 2)" :key="index">{{zoneNames[index]}}</div>
+          <!-- <div @click= "switchAll" data-target="slide-out" class="waves-effect waves-light roundBtn btn-large sidenav-trigger"><small>classes + auditorium</small></div> -->
      </div>
 
       <!-- Video Wall Section -->
